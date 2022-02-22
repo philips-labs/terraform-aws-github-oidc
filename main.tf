@@ -1,0 +1,112 @@
+data "aws_caller_identity" "current" {}
+
+resource "random_string" "random" {
+  count = var.role_name == null ? 1 : 0
+
+  length  = 8
+  lower   = true
+  special = false
+}
+
+locals {
+  iam_openid_connect_provider_arn = var.openid_connect_provider_managed ? aws_iam_openid_connect_provider.github_actions[0].arn : var.openid_connect_provider_arn
+  github_environments             = length(var.github_environments) > 0 && var.repo != null ? [for e in var.github_environments : "repo:${var.repo}:environment:${e}"] : ["ensurethereisnotmatch"]
+  role_name                       = var.repo != null && var.role_name != null ? var.role_name : "${substr(replace(var.repo != null ? var.repo : "", "/", "-"), 0, 64 - 8)}-${random_string.random[0].id}"
+}
+
+
+resource "aws_iam_openid_connect_provider" "github_actions" {
+  count = var.openid_connect_provider_managed ? 1 : 0
+
+  url             = "https://token.actions.githubusercontent.com"
+  client_id_list  = ["sts.amazonaws.com"]
+  thumbprint_list = var.thumbprint_list
+}
+
+data "aws_iam_policy_document" "github_actions_assume_role_policy" {
+  count = var.repo != null ? 1 : 0
+
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    principals {
+      type = "Federated"
+      identifiers = [
+        local.iam_openid_connect_provider_arn
+      ]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "token.actions.githubusercontent.com:aud"
+      values   = ["sts.amazonaws.com"]
+    }
+
+    dynamic "condition" {
+      for_each = [setunion(var.default_conditions, ["allow_main"])]
+
+      content {
+        test     = "StringLike"
+        variable = "token.actions.githubusercontent.com:sub"
+        values   = ["repo:${var.repo}:ref:refs/heads/main"]
+      }
+    }
+
+    dynamic "condition" {
+      for_each = [setunion(var.default_conditions, ["allow_environment"])]
+
+      content {
+        test     = "StringLike"
+        variable = "token.actions.githubusercontent.com:sub"
+        values   = local.github_environments
+      }
+    }
+
+    dynamic "condition" {
+      for_each = [setunion(var.default_conditions, ["allow_all"])]
+
+      content {
+        test     = "StringLike"
+        variable = "token.actions.githubusercontent.com:sub"
+        values   = ["repo:${var.repo}:*"]
+      }
+    }
+
+    dynamic "condition" {
+      for_each = [setunion(var.default_conditions, ["deny_pull_request"])]
+
+      content {
+        test     = "StringNotLike"
+        variable = "token.actions.githubusercontent.com:sub"
+        values   = ["repo:${var.repo}:pull_request"]
+      }
+    }
+
+    dynamic "condition" {
+      for_each = toset(var.conditions)
+
+      content {
+        test     = condition.value.test
+        variable = condition.value.variable
+        values   = condition.value.values
+      }
+    }
+  }
+}
+
+resource "aws_iam_role" "main" {
+  count = var.repo != null ? 1 : 0
+
+  name                 = local.role_name
+  path                 = var.role_path
+  permissions_boundary = var.role_permissions_boundary
+  assume_role_policy   = data.aws_iam_policy_document.github_actions_assume_role_policy[0].json
+}

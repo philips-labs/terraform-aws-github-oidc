@@ -1,0 +1,19 @@
+name: Test ECR
+on:
+  push:
+
+jobs:
+  test:
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions/repo-s3
+          role-session-name: gh-actions
+          aws-region: eu-west-1
+
+      - run: |
+          aws s3 ls <name-of-bucket>
