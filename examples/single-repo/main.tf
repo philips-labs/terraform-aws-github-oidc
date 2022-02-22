@@ -1,7 +1,6 @@
 module "oidc" {
   source = "../../"
 
-  namespace                       = var.namespace
   openid_connect_provider_managed = true
   repo                            = var.repo
   role_name                       = "repo-s3"
