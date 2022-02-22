@@ -1,0 +1,85 @@
+name: Release
+
+permissions: write-all
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Set initial version or override calculated version. Use the following convention for the version: v<major>.<minor>.<patch>"
+        required: false
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dry run release draft to calculate next version
+        uses: release-drafter/release-drafter@v5
+        id: draft
+        with:
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for changes
+        id: release
+        run: |
+          isRelease=${{ github.event.inputs.version || endsWith(steps.draft.outputs.tag_name,'No changes%0A') }}
+          major=${version%%.*}
+          echo "::set-output name=is_release::${isRelease}"
+      - name: Set version
+        if: ${{ steps.release.outputs.is_release }}
+        id: version
+        run: |
+          version=${{ github.event.inputs.version || steps.draft.outputs.tag_name }}
+          major=${version%%.*}
+          echo "::set-output name=version::${version}"
+          echo "::set-output name=major::${major}"
+      - uses: release-drafter/release-drafter@master
+        if: ${{ steps.release.outputs.is_release }}
+        with:
+          version: ${{ steps.version.outputs.version }}
+          publish: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout code
+        if: ${{ steps.release.outputs.is_release }}
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Update major tag
+        if: ${{ steps.release.outputs.is_release }}
+        uses: actions/github-script@v5
+        with:
+          script: |
+            let newTag = false
+            try {
+              const result = await github.rest.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'tags/${{ steps.version.outputs.major }}',
+              })
+              console.log(JSON.stringify(result, null, 2))
+            } catch (e) {
+              console.log(e)
+              newTag = true
+            }
+            if (newTag) {
+              github.rest.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'refs/tags/${{ steps.version.outputs.major }}',
+                sha: context.sha,
+              })              
+            } else {
+              github.rest.git.updateRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'tags/${{ steps.version.outputs.major }}',
+                sha: context.sha,
+                force: true
+              })
+            }

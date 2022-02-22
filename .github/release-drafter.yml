@@ -1,0 +1,58 @@
+name-template: "v$RESOLVED_VERSION"
+tag-template: "v$RESOLVED_VERSION"
+exclude-labels:
+  - "skip-changelog"
+categories:
+  - title: "💥 Breaking changes"
+    labels:
+      - "major"
+  - title: "✨ Features"
+    labels:
+      - "minor"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "patch"
+  - title: "📚 Documentation"
+    labels:
+      - "docs"
+  - title: "📦 Dependencies"
+    labels:
+      - "dependencies"
+
+change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+change-title-escapes: '\<*_&'
+sort-by: title
+sort-direction: ascending
+
+version-resolver:
+  major:
+    labels:
+      - "major"
+  minor:
+    labels:
+      - "minor"
+  patch:
+    labels:
+      - "patch"
+
+autolabeler:
+  - label: "patch"
+    title:
+      - "/fix/i"
+  - label: "minor"
+    title:
+      - "/feat/i"
+  - label: "major"
+    title:
+      - "/BREAKING_CHANGE/i"
+  - label: "docs"
+    title:
+      - "/docs/i"
+  - label: "skip-changelog"
+    title:
+      - "/chore/i"
+
+template: |
+  ## Changes
+
+  $CHANGES

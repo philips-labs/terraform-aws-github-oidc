@@ -1,0 +1,41 @@
+name: Terraform code check
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  validate_module:
+    name: Check module
+    strategy:
+      matrix:
+        terraform: [1.1.6]
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:${{ matrix.terraform }}
+    steps:
+      - uses: actions/checkout@v2
+      - run: terraform init
+      - run: terraform fmt --recursive -check=true
+      - run: terraform validate
+
+  validate_examples:
+    name: Check examples
+    strategy:
+      matrix:
+        terraform: [1.1.6]
+    runs-on: ubuntu-latest
+    container:
+      image: hashicorp/terraform:${{ matrix.terraform }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Validate Examples
+        run: |
+          for example in $(find examples -maxdepth 1 -mindepth 1 -type d); do
+            cd $example
+            terraform init
+            terraform fmt --recursive -check=true
+            terraform validate
+            cd -
+          done
