@@ -13,7 +13,7 @@ The module can manage the following:
 
 ### Manage the OIDC identity provider
 
-By setting `openid_connect_provider_managed` to true the module will create an provider. Optional you can set `repo` to create a role.
+By setting `openid_connect_provider_managed` to true the module will create an provider. Optional you can set `repo` to create a role. The default [thumbprint](#input\_thumbprint\_list) is set as published by [GitHub](https://github.blog/changelog/2022-01-13-github-actions-update-on-oidc-based-deployments-to-aws/), a small [script](./bin/generate-thumbprint.sh) is available to generate a thumbprint.
 
 ### Manage roles for a repo
 
@@ -68,8 +68,8 @@ No modules.
 | <a name="input_conditions"></a> [conditions](#input\_conditions) | (Optional) Additonal conditions for checking the OIDC claim. | <pre>list(object({<br>    test     = string<br>    variable = string<br>    values   = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_default_conditions"></a> [default\_conditions](#input\_default\_conditions) | (Optional) Default condtions to apply, at least one of the following is madatory: 'allow\_main', 'allow\_environment', 'deny\_pull\_request' and 'allow\_all'. | `list(string)` | <pre>[<br>  "allow_main",<br>  "deny_pull_request"<br>]</pre> | no |
 | <a name="input_github_environments"></a> [github\_environments](#input\_github\_environments) | (Optional) Allow GitHub action to deploy to all (default) or to one of the environments in the list. | `list(string)` | <pre>[<br>  "*"<br>]</pre> | no |
-| <a name="input_openid_connect_provider_arn"></a> [openid\_connect\_provider\_arn](#input\_openid\_connect\_provider\_arn) | (Optional) Set the openid connect provider ARN when the provider is not managed by the module. | `string` | `null` | no |
-| <a name="input_openid_connect_provider_managed"></a> [openid\_connect\_provider\_managed](#input\_openid\_connect\_provider\_managed) | (Optional) Let the module manage the openid connect provider. | `bool` | `false` | no |
+| <a name="input_openid_connect_provider_arn"></a> [openid\_connect\_provider\_arn](#input\_openid\_connect\_provider\_arn) | Set the openid connect provider ARN when the provider is not managed by the module. | `string` | `null` | no |
+| <a name="input_openid_connect_provider_managed"></a> [openid\_connect\_provider\_managed](#input\_openid\_connect\_provider\_managed) | Let the module manage the openid connect provider. When not managed (default) ensure you set `openid_connect_provider_arn`. | `bool` | `false` | no |
 | <a name="input_repo"></a> [repo](#input\_repo) | (Optional) GitHub repository to grant access to assume a role via OIDC. When the repo is set, a role will be created. | `string` | `null` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | (Optional) role name of the created role, if not provided the `namespace` will be used. | `string` | `null` | no |
 | <a name="input_role_path"></a> [role\_path](#input\_role\_path) | (Optional) Path for the created role, requires `repo` is set. | `string` | `"/github-actions/"` | no |

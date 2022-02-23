@@ -25,13 +25,13 @@ variable "github_environments" {
 }
 
 variable "openid_connect_provider_arn" {
-  description = "(Optional) Set the openid connect provider ARN when the provider is not managed by the module."
+  description = "Set the openid connect provider ARN when the provider is not managed by the module."
   type        = string
   default     = null
 }
 
 variable "openid_connect_provider_managed" {
-  description = "(Optional) Let the module manage the openid connect provider. "
+  description = "Let the module manage the openid connect provider. When not managed (default) ensure you set `openid_connect_provider_arn`."
   type        = bool
   default     = false
 }
@@ -68,6 +68,10 @@ variable "role_permissions_boundary" {
   default     = null
 }
 
+##
+## Thumbprint published by GitHub https://github.blog/changelog/2022-01-13-github-actions-update-on-oidc-based-deployments-to-aws/
+## can also be generated with the script in ./bin/generate-thumbprint.sh
+##
 variable "thumbprint_list" {
   description = "(Optional) A list of server certificate thumbprints for the OpenID Connect (OIDC) identity provider's server certificate(s)."
   type        = list(string)

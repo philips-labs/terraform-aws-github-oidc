@@ -1,5 +1,9 @@
 #!/bin/bash
-
+## Script to generate the Thumbprint
+##
+## https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc_verify-thumbprint.html
+##
+##
 HOST=$(curl https://vstoken.actions.githubusercontent.com/.well-known/openid-configuration |
 	jq -r '.jwks_uri | split("/")[2]')
 % echo | openssl s_client -servername $HOST -showcerts -connect $HOST:443 2>/dev/null |
