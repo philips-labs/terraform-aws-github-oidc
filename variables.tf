@@ -16,6 +16,10 @@ variable "default_conditions" {
     condition     = length(setsubtract(var.default_conditions, ["allow_main", "allow_environment", "deny_pull_request", "allow_all"])) == 0
     error_message = "Valid configurations are: 'allow_main', 'allow_environment', 'deny_pull_request' and 'allow_all'."
   }
+  validation {
+    condition     = length(var.default_conditions) > 0
+    error_message = "At least one of the following configuration needs to be set: 'allow_main', 'allow_environment', 'deny_pull_request' and 'allow_all'."
+  }
 }
 
 variable "github_environments" {
@@ -28,12 +32,6 @@ variable "openid_connect_provider_arn" {
   description = "Set the openid connect provider ARN when the provider is not managed by the module."
   type        = string
   default     = null
-}
-
-variable "openid_connect_provider_managed" {
-  description = "Let the module manage the openid connect provider. When not managed (default) ensure you set `openid_connect_provider_arn`."
-  type        = bool
-  default     = false
 }
 
 variable "repo" {

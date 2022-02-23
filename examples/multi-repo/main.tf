@@ -1,7 +1,5 @@
 module "oidc_provider" {
-  source = "../../"
-
-  openid_connect_provider_managed = true
+  source = "../../modules/provider"
 }
 
 module "oidc_repo_s3" {
@@ -21,7 +19,6 @@ module "oidc_repo_ecr" {
   github_environments         = ["production"]
 }
 
-
 ##########################################
 ##
 ## Resources for s3 repo
@@ -32,7 +29,6 @@ resource "aws_iam_role_policy" "s3" {
   role   = module.oidc_repo_s3.role.name
   policy = data.aws_iam_policy_document.s3.json
 }
-
 
 data "aws_iam_policy_document" "s3" {
   statement {

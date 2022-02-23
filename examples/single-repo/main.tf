@@ -1,9 +1,8 @@
 module "oidc" {
   source = "../../"
 
-  openid_connect_provider_managed = true
-  repo                            = var.repo
-  role_name                       = "repo-s3"
+  repo      = var.repo
+  role_name = "repo-s3"
 }
 
 resource "aws_iam_role_policy" "s3" {
