@@ -35,17 +35,17 @@ The following examples are provided:
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3 |
+| Name                                                                      | Version |
+| ------------------------------------------------------------------------- | ------- |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1    |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws)                   | >= 3    |
 
 ## Providers
 
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 3 |
-| <a name="provider_random"></a> [random](#provider\_random) | n/a |
+| Name                                                       | Version |
+| ---------------------------------------------------------- | ------- |
+| <a name="provider_aws"></a> [aws](#provider\_aws)          | >= 3    |
+| <a name="provider_random"></a> [random](#provider\_random) | n/a     |
 
 ## Modules
 
@@ -53,35 +53,35 @@ No modules.
 
 ## Resources
 
-| Name | Type |
-|------|------|
-| [aws_iam_openid_connect_provider.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) | resource |
-| [aws_iam_role.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
-| [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| Name                                                                                                                                                            | Type        |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------- |
+| [aws_iam_openid_connect_provider.github_actions](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider)       | resource    |
+| [aws_iam_role.main](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)                                                       | resource    |
+| [random_string.random](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string)                                                   | resource    |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity)                                   | data source |
 | [aws_iam_policy_document.github_actions_assume_role_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 
 ## Inputs
 
-| Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
-| <a name="input_conditions"></a> [conditions](#input\_conditions) | (Optional) Additonal conditions for checking the OIDC claim. | <pre>list(object({<br>    test     = string<br>    variable = string<br>    values   = list(string)<br>  }))</pre> | `[]` | no |
-| <a name="input_default_conditions"></a> [default\_conditions](#input\_default\_conditions) | (Optional) Default condtions to apply, at least one of the following is madatory: 'allow\_main', 'allow\_environment', 'deny\_pull\_request' and 'allow\_all'. | `list(string)` | <pre>[<br>  "allow_main",<br>  "deny_pull_request"<br>]</pre> | no |
-| <a name="input_github_environments"></a> [github\_environments](#input\_github\_environments) | (Optional) Allow GitHub action to deploy to all (default) or to one of the environments in the list. | `list(string)` | <pre>[<br>  "*"<br>]</pre> | no |
-| <a name="input_openid_connect_provider_arn"></a> [openid\_connect\_provider\_arn](#input\_openid\_connect\_provider\_arn) | Set the openid connect provider ARN when the provider is not managed by the module. | `string` | `null` | no |
-| <a name="input_openid_connect_provider_managed"></a> [openid\_connect\_provider\_managed](#input\_openid\_connect\_provider\_managed) | Let the module manage the openid connect provider. When not managed (default) ensure you set `openid_connect_provider_arn`. | `bool` | `false` | no |
-| <a name="input_repo"></a> [repo](#input\_repo) | (Optional) GitHub repository to grant access to assume a role via OIDC. When the repo is set, a role will be created. | `string` | `null` | no |
-| <a name="input_role_name"></a> [role\_name](#input\_role\_name) | (Optional) role name of the created role, if not provided the `namespace` will be used. | `string` | `null` | no |
-| <a name="input_role_path"></a> [role\_path](#input\_role\_path) | (Optional) Path for the created role, requires `repo` is set. | `string` | `"/github-actions/"` | no |
-| <a name="input_role_permissions_boundary"></a> [role\_permissions\_boundary](#input\_role\_permissions\_boundary) | (Optional) Boundary for the created role, requires `repo` is set. | `string` | `null` | no |
-| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | (Optional) A list of server certificate thumbprints for the OpenID Connect (OIDC) identity provider's server certificate(s). | `list(string)` | <pre>[<br>  "6938fd4d98bab03faadb97b34396831e3780aea1"<br>]</pre> | no |
+| Name                                                                                                                                  | Description                                                                                                                                                    | Type                                                                                                               | Default                                                           | Required |
+| ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------- | :------: |
+| <a name="input_conditions"></a> [conditions](#input\_conditions)                                                                      | (Optional) Additonal conditions for checking the OIDC claim.                                                                                                   | <pre>list(object({<br>    test     = string<br>    variable = string<br>    values   = list(string)<br>  }))</pre> | `[]`                                                              |    no    |
+| <a name="input_default_conditions"></a> [default\_conditions](#input\_default\_conditions)                                            | (Optional) Default condtions to apply, at least one of the following is madatory: 'allow\_main', 'allow\_environment', 'deny\_pull\_request' and 'allow\_all'. | `list(string)`                                                                                                     | <pre>[<br>  "allow_main",<br>  "deny_pull_request"<br>]</pre>     |    no    |
+| <a name="input_github_environments"></a> [github\_environments](#input\_github\_environments)                                         | (Optional) Allow GitHub action to deploy to all (default) or to one of the environments in the list.                                                           | `list(string)`                                                                                                     | <pre>[<br>  "*"<br>]</pre>                                        |    no    |
+| <a name="input_openid_connect_provider_arn"></a> [openid\_connect\_provider\_arn](#input\_openid\_connect\_provider\_arn)             | Set the openid connect provider ARN when the provider is not managed by the module.                                                                            | `string`                                                                                                           | `null`                                                            |    no    |
+| <a name="input_openid_connect_provider_managed"></a> [openid\_connect\_provider\_managed](#input\_openid\_connect\_provider\_managed) | Let the module manage the openid connect provider. When not managed (default) ensure you set `openid_connect_provider_arn`.                                    | `bool`                                                                                                             | `false`                                                           |    no    |
+| <a name="input_repo"></a> [repo](#input\_repo)                                                                                        | (Optional) GitHub repository to grant access to assume a role via OIDC. When the repo is set, a role will be created.                                          | `string`                                                                                                           | `null`                                                            |    no    |
+| <a name="input_role_name"></a> [role\_name](#input\_role\_name)                                                                       | (Optional) role name of the created role, if not provided the `namespace` will be used.                                                                        | `string`                                                                                                           | `null`                                                            |    no    |
+| <a name="input_role_path"></a> [role\_path](#input\_role\_path)                                                                       | (Optional) Path for the created role, requires `repo` is set.                                                                                                  | `string`                                                                                                           | `"/github-actions/"`                                              |    no    |
+| <a name="input_role_permissions_boundary"></a> [role\_permissions\_boundary](#input\_role\_permissions\_boundary)                     | (Optional) Boundary for the created role, requires `repo` is set.                                                                                              | `string`                                                                                                           | `null`                                                            |    no    |
+| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list)                                                     | (Optional) A list of server certificate thumbprints for the OpenID Connect (OIDC) identity provider's server certificate(s).                                   | `list(string)`                                                                                                     | <pre>[<br>  "6938fd4d98bab03faadb97b34396831e3780aea1"<br>]</pre> |    no    |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_openid_connect_provider"></a> [openid\_connect\_provider](#output\_openid\_connect\_provider) | AWS OpenID Connected identity provider. |
-| <a name="output_role"></a> [role](#output\_role) | The crated role that can be assumed for the configured repository. |
+| Name                                                                                                          | Description                                                        |
+| ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| <a name="output_openid_connect_provider"></a> [openid\_connect\_provider](#output\_openid\_connect\_provider) | AWS OpenID Connected identity provider.                            |
+| <a name="output_role"></a> [role](#output\_role)                                                              | The crated role that can be assumed for the configured repository. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contribution
