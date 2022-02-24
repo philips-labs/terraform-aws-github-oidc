@@ -60,7 +60,7 @@ module "oidc_repo_s3" {
 The following examples are provided:
 
 1. [Single repository](./examples/single-repo/README.md): using the module for a single repository and managing the identity provider by the same instance.
-2. [Multiple repositories](./examples/multi-repo/README.md): using the module for multiple repositories and manage the identity provider by multiple module instances.
+2. [Multiple repositories](./examples/multi-repo/README.md): using the module for multiple repositories and managing the identity provider in separate module instances.
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
