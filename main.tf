@@ -7,16 +7,8 @@ resource "random_string" "random" {
 }
 
 locals {
-  openid_connect_provider_arn = var.openid_connect_provider_arn == null ? module.oidc_provider[0].openid_connect_provider.arn : var.openid_connect_provider_arn
-  github_environments         = (length(var.github_environments) > 0 && var.repo != null) ? [for e in var.github_environments : "repo:${var.repo}:environment:${e}"] : ["ensurethereisnotmatch"]
-  role_name                   = (var.repo != null && var.role_name != null) ? var.role_name : "${substr(replace(var.repo != null ? var.repo : "", "/", "-"), 0, 64 - 8)}-${random_string.random[0].id}"
-}
-
-module "oidc_provider" {
-  count = var.openid_connect_provider_arn == null ? 1 : 0
-
-  source          = "./modules/provider"
-  thumbprint_list = var.thumbprint_list
+  github_environments = (length(var.github_environments) > 0 && var.repo != null) ? [for e in var.github_environments : "repo:${var.repo}:environment:${e}"] : ["ensurethereisnotmatch"]
+  role_name           = (var.repo != null && var.role_name != null) ? var.role_name : "${substr(replace(var.repo != null ? var.repo : "", "/", "-"), 0, 64 - 8)}-${random_string.random[0].id}"
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role_policy" {
@@ -27,7 +19,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     principals {
       type = "Federated"
       identifiers = [
-        local.openid_connect_provider_arn
+        var.openid_connect_provider_arn
       ]
     }
 
