@@ -17,7 +17,7 @@ The module provides two options for creating an OpenID connect provider. The fir
 
 ### Manage roles for a repo
 
-The module creates for a repo a role with a policy to check the OIDC claimes for the given repo. Be default the policy is set to only allow action running on the main branch and deny on the pull request. You can choose based on your need one (or more) of the default conditions to check. Additional a list of conditions can be provided. The assume role is only allowed when all conditions evaluates to true. The following default conditions can be set.
+The module creates a role with an assume role policy to check the OIDC claims for the given repo. Be default the policy is set to only allow actions running on the main branch and deny pull request actions. You can choose based on your need one (or more) of the default conditions to check. Additionally, a list of conditions can be provided. The role can only be assumed when all conditions evaluate to true. The following default conditions can be set.
 
 - `allow_main` : Allow GitHub Actions only running on the main branch.
 - `allow_environment`: Allow GitHub Actions only for environments, by setting `github_environments` you can limit to a dedicated environment.
