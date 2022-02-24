@@ -4,7 +4,7 @@ This [Terraform](https://www.terraform.io/) module manages OpenID Connect (OIDC)
 
 ## Description
 
-The module is strict on the claim checks to avoid that creating an OpenID connect integration opens your AWS account to any GitHub repo. However this strictness is not taking all the risk away. Ensure you familiarize your self with OpenID Connect, docs provided by GitHub and AWS. As always thing about minimize the the privileges.
+The module is strict on the claim checks to avoid that creating an OpenID connect integration opens your AWS account to any GitHub repo. However this strictness is not taking all the risk away. Ensure you familiarize yourself with OpenID Connect and the docs provided by GitHub and AWS. As always think about minimizing the privileges.
 
 The module can manage the following:
 
