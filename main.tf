@@ -38,7 +38,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     }
 
     dynamic "condition" {
-      for_each = [setunion(var.default_conditions, ["allow_main"])]
+      for_each = contains(var.default_conditions, "allow_main") ? ["create"] : []
 
       content {
         test     = "StringLike"
@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     }
 
     dynamic "condition" {
-      for_each = [setunion(var.default_conditions, ["allow_environment"])]
+      for_each = contains(var.default_conditions, "allow_environment") ? ["create"] : []
 
       content {
         test     = "StringLike"
@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     }
 
     dynamic "condition" {
-      for_each = [setunion(var.default_conditions, ["allow_all"])]
+      for_each = contains(var.default_conditions, "allow_all") ? ["create"] : []
 
       content {
         test     = "StringLike"
@@ -68,7 +68,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     }
 
     dynamic "condition" {
-      for_each = [setunion(var.default_conditions, ["deny_pull_request"])]
+      for_each = contains(var.default_conditions, "deny_pull_request") ? ["create"] : []
 
       content {
         test     = "StringNotLike"
