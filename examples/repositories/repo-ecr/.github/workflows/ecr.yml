@@ -1,0 +1,24 @@
+name: Test ECR
+on:
+  push:
+
+jobs:
+  test:
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    environment:
+      name: demo
+    steps:
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/github-actions/<replace-with-tf-output>
+          role-session-name: gh-actions
+          aws-region: eu-west-1
+
+      - run: |
+          docker pull busybox:latest
+          docker
+          docker tag busybox:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-1.amazonaws.com/busybox:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-west-1.amazonaws.com/busybox:latest
