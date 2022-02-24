@@ -8,7 +8,7 @@ The module is strict on the claim checks to avoid that creating an OpenID connec
 
 The module can manage the following:
 
-- Manage the OpenID Connect identity provider for GitHub in your AWS account.
+- The OpenID Connect identity provider for GitHub in your AWS account.
 - Manage a role and policy to check to check claims.
 
 ### Manage the OIDC identity provider
