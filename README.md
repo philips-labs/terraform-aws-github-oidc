@@ -13,7 +13,7 @@ The module can manage the following:
 
 ### Manage the OIDC identity provider
 
-The module provides two options for creating an OpenID connect provider. The first one is for the simple case you only need to create one role, for one repo in one AWS account. In this case you simple not set `openid_connect_provider_arn`. The second options is use the internal `provider` module toe create the OpenID Connect provider. This module will output the provider. This output can be passed to other instances of the module to setup roles for repositories.
+The module provides two options for creating an OpenID connect provider. The first one is for the simple case you only need to create a single role, for one repo in one AWS account. In this case you should not set the `openid_connect_provider_arn` property. The second option is using the internal `provider` module to create the OpenID Connect provider. This configuration will create the provider and output the ARN. This output can be passed to other instances of the module to setup roles for multiple repositories on the same provider.
 
 ### Manage roles for a repo
 
