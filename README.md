@@ -59,7 +59,7 @@ module "oidc_repo_s3" {
 
 The following examples are provided:
 
-1. [Single repository](./examples/single-repo/README.md): using the module for a single repository and manage the identity provider by the same module instance.
+1. [Single repository](./examples/single-repo/README.md): using the module for a single repository and managing the identity provider by the same instance.
 2. [Multiple repositories](./examples/multi-repo/README.md): using the module for multiple repositories and manage the identity provider by multiple module instances.
 
 
