@@ -8,12 +8,12 @@ The module is strict on the claim checks to avoid that creating an OpenID connec
 
 The module can manage the following:
 
-- The OpenID Connect identity provider for GitHub in your AWS account.
+- The OpenID Connect identity provider for GitHub in your AWS account (via a submodule).
 - A role and assume role policy to check to check OIDC claims.
 
 ### Manage the OIDC identity provider
 
-The module provides two options for creating an OpenID connect provider. The first one is for the simple case you only need to create a single role, for one repo in one AWS account. In this case you should not set the `openid_connect_provider_arn` property. The second option is using the internal `provider` module to create the OpenID Connect provider. This configuration will create the provider and output the ARN. This output can be passed to other instances of the module to setup roles for multiple repositories on the same provider.
+The module provides an option for creating an OpenID connect provider. Using the internal `provider` module to create the OpenID Connect provider. This configuration will create the provider and output the ARN. This output can be passed to other instances of the module to setup roles for repositories on the same provider. Alternative you can create the OpenID connect provider via the resource [aws_iam_openid_connect_provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_openid_connect_provider) or in case you have an existing one look-up via the data source [aws_iam_openid_connect_provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_openid_connect_provider).
 
 ### Manage roles for a repo
 
@@ -27,29 +27,22 @@ The module creates a role with an assume role policy to check the OIDC claims fo
 
 ## Usages
 
-Setup for a single repository in a single AWS account, see also the examples.
+In case there is not OpenID Connect provider already created in the AWS account, create one via the submodule.
 
-```hcl
-module "oidc" {
-  source = "github.com/philips-labs/terraform-aws-github-oidc?ref=<version>"
-
-  repo      = var.repo
-  role_name = "repo-s3"
-}
-```
-
-Setup for multiple repositories connecting to a single AWS account, see also the examples.
 
 ```hcl
 module "oidc_provider" {
   source = "github.com/philips-labs/terraform-aws-github-oidc/?ref=<version>//modules/provider"
 }
+```
 
+Nest you ca pass the output the one or multiple instances of the module.
+
+```
 module "oidc_repo_s3" {
   source = "github.com/philips-labs/terraform-aws-github-oidc?ref=<version>"
 
-  openid_connect_provider_arn = module.oidc_provider.openid_connect_provider.arn
-  repo                        = var.repo_s3
+  openid_connect_provider_arn = module.oidc_provider.  repo                        = var.repo_s3
   role_name                   = "repo-s3"
 }
 ```
@@ -57,10 +50,7 @@ module "oidc_repo_s3" {
 
 ## Examples
 
-The following examples are provided:
-
-1. [Single repository](./examples/single-repo/README.md): using the module for a single repository and managing the identity provider by the same instance.
-2. [Multiple repositories](./examples/multi-repo/README.md): using the module for multiple repositories and managing the identity provider in separate module instances.
+Check out the [example](examples/default/README.md) for a full example of using the module.
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -80,9 +70,7 @@ The following examples are provided:
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_oidc_provider"></a> [oidc\_provider](#module\_oidc\_provider) | ./modules/provider | n/a |
+No modules.
 
 ## Resources
 
@@ -99,12 +87,11 @@ The following examples are provided:
 | <a name="input_conditions"></a> [conditions](#input\_conditions) | (Optional) Additonal conditions for checking the OIDC claim. | <pre>list(object({<br>    test     = string<br>    variable = string<br>    values   = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_default_conditions"></a> [default\_conditions](#input\_default\_conditions) | (Optional) Default condtions to apply, at least one of the following is madatory: 'allow\_main', 'allow\_environment', 'deny\_pull\_request' and 'allow\_all'. | `list(string)` | <pre>[<br>  "allow_main",<br>  "deny_pull_request"<br>]</pre> | no |
 | <a name="input_github_environments"></a> [github\_environments](#input\_github\_environments) | (Optional) Allow GitHub action to deploy to all (default) or to one of the environments in the list. | `list(string)` | <pre>[<br>  "*"<br>]</pre> | no |
-| <a name="input_openid_connect_provider_arn"></a> [openid\_connect\_provider\_arn](#input\_openid\_connect\_provider\_arn) | Set the openid connect provider ARN when the provider is not managed by the module. | `string` | `null` | no |
+| <a name="input_openid_connect_provider_arn"></a> [openid\_connect\_provider\_arn](#input\_openid\_connect\_provider\_arn) | Set the openid connect provider ARN when the provider is not managed by the module. | `string` | n/a | yes |
 | <a name="input_repo"></a> [repo](#input\_repo) | (Optional) GitHub repository to grant access to assume a role via OIDC. When the repo is set, a role will be created. | `string` | `null` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | (Optional) role name of the created role, if not provided the `namespace` will be used. | `string` | `null` | no |
 | <a name="input_role_path"></a> [role\_path](#input\_role\_path) | (Optional) Path for the created role, requires `repo` is set. | `string` | `"/github-actions/"` | no |
 | <a name="input_role_permissions_boundary"></a> [role\_permissions\_boundary](#input\_role\_permissions\_boundary) | (Optional) Boundary for the created role, requires `repo` is set. | `string` | `null` | no |
-| <a name="input_thumbprint_list"></a> [thumbprint\_list](#input\_thumbprint\_list) | (Optional) A list of server certificate thumbprints for the OpenID Connect (OIDC) identity provider's server certificate(s). | `list(string)` | <pre>[<br>  "6938fd4d98bab03faadb97b34396831e3780aea1"<br>]</pre> | no |
 
 ## Outputs
 
