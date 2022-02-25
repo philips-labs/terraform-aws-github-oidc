@@ -37,7 +37,7 @@ jobs:
       fail-fast: false
       matrix:
         terraform: [1.1.6, "latest"]
-        example: ["single-repo", "multi-repo"]
+        example: ["default"]
     defaults:
       run:
         working-directory: examples/${{ matrix.example }}
