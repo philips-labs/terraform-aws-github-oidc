@@ -24,11 +24,9 @@ The module creates a role with an assume role policy to check the OIDC claims fo
 - `deny_pull_request`: Denies assuming the role for a pull request.
 - `allow_all` : Allow GitHub Actions for any claim for the repository. Be careful, this allows forks as well to assume the role!
 
-
 ## Usages
 
 In case there is not OpenID Connect provider already created in the AWS account, create one via the submodule.
-
 
 ```hcl
 module "oidc_provider" {
@@ -38,15 +36,25 @@ module "oidc_provider" {
 
 Nest you ca pass the output the one or multiple instances of the module.
 
-```
+```hcl
 module "oidc_repo_s3" {
   source = "github.com/philips-labs/terraform-aws-github-oidc?ref=<version>"
 
   openid_connect_provider_arn = module.oidc_provider.  repo                        = var.repo_s3
   role_name                   = "repo-s3"
+
+  # optional
+  # override default conditions
+  default_conditions          = ["allow_main"]
+
+  # add extra conditions, will be merged with the default_conditions
+  conditions                  = [{
+    test = "StringLike"
+    variable = "token.actions.githubusercontent.com:sub"
+    values = ["repo:my-org/my-repo:pull_request"]
+  }]
 }
 ```
-
 
 ## Examples
 
@@ -98,6 +106,7 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_role"></a> [role](#output\_role) | The crated role that can be assumed for the configured repository. |
+| <a name="output_test"></a> [test](#output\_test) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contribution
