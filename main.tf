@@ -9,6 +9,35 @@ resource "random_string" "random" {
 locals {
   github_environments = (length(var.github_environments) > 0 && var.repo != null) ? [for e in var.github_environments : "repo:${var.repo}:environment:${e}"] : ["ensurethereisnotmatch"]
   role_name           = (var.repo != null && var.role_name != null) ? var.role_name : "${substr(replace(var.repo != null ? var.repo : "", "/", "-"), 0, 64 - 8)}-${random_string.random[0].id}"
+
+  variable_sub = "token.actions.githubusercontent.com:sub"
+
+  default_allow_main = contains(var.default_conditions, "allow_main") ? [{
+    test     = "StringLike"
+    variable = local.variable_sub
+    values   = ["repo:${var.repo}:ref:refs/heads/main"]
+  }] : []
+
+  default_allow_environment = contains(var.default_conditions, "allow_environment") ? [{
+    test     = "StringLike"
+    variable = local.variable_sub
+    values   = local.github_environments
+  }] : []
+
+  default_allow_all = contains(var.default_conditions, "allow_all") ? [{
+    test     = "StringLike"
+    variable = local.variable_sub
+    values   = ["repo:${var.repo}:*"]
+  }] : []
+
+  default_deny_pull_request = contains(var.default_conditions, "deny_pull_request") ? [{
+    test     = "StringNotLike"
+    variable = local.variable_sub
+    values   = ["repo:${var.repo}:pull_request"]
+  }] : []
+
+  conditions = setunion(local.default_allow_main, local.default_allow_environment, local.default_allow_all, local.default_deny_pull_request, var.conditions)
+
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role_policy" {
@@ -30,47 +59,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     }
 
     dynamic "condition" {
-      for_each = contains(var.default_conditions, "allow_main") ? ["create"] : []
-
-      content {
-        test     = "StringLike"
-        variable = "token.actions.githubusercontent.com:sub"
-        values   = ["repo:${var.repo}:ref:refs/heads/main"]
-      }
-    }
-
-    dynamic "condition" {
-      for_each = contains(var.default_conditions, "allow_environment") ? ["create"] : []
-
-      content {
-        test     = "StringLike"
-        variable = "token.actions.githubusercontent.com:sub"
-        values   = local.github_environments
-      }
-    }
-
-    dynamic "condition" {
-      for_each = contains(var.default_conditions, "allow_all") ? ["create"] : []
-
-      content {
-        test     = "StringLike"
-        variable = "token.actions.githubusercontent.com:sub"
-        values   = ["repo:${var.repo}:*"]
-      }
-    }
-
-    dynamic "condition" {
-      for_each = contains(var.default_conditions, "deny_pull_request") ? ["create"] : []
-
-      content {
-        test     = "StringNotLike"
-        variable = "token.actions.githubusercontent.com:sub"
-        values   = ["repo:${var.repo}:pull_request"]
-      }
-    }
-
-    dynamic "condition" {
-      for_each = toset(var.conditions)
+      for_each = local.conditions
 
       content {
         test     = condition.value.test

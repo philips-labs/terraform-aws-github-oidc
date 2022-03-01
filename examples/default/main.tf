@@ -4,9 +4,6 @@ module "oidc_provider" {
 
 module "oidc_repo_s3" {
   source = "../../"
-  depends_on = [
-    module.oidc_provider
-  ]
 
   openid_connect_provider_arn = module.oidc_provider.openid_connect_provider.arn
   repo                        = var.repo_s3
@@ -15,9 +12,7 @@ module "oidc_repo_s3" {
 
 module "oidc_repo_ecr" {
   source = "../../"
-  depends_on = [
-    module.oidc_provider
-  ]
+
   openid_connect_provider_arn = module.oidc_provider.openid_connect_provider.arn
   repo                        = var.repo_ecr
   default_conditions          = ["allow_environment"]
