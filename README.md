@@ -106,7 +106,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_role"></a> [role](#output\_role) | The crated role that can be assumed for the configured repository. |
-| <a name="output_test"></a> [test](#output\_test) | n/a |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contribution
