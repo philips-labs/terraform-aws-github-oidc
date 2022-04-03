@@ -37,7 +37,14 @@ locals {
   }] : []
 
   conditions = setunion(local.default_allow_main, local.default_allow_environment, local.default_allow_all, local.default_deny_pull_request, var.conditions)
-
+  merge_conditions = [
+    for k, v in { for c in local.conditions : "${c.test}|${c.variable}" => c... } : # group by test & variable
+    {
+      "test" : k,
+      "variable" : v[0].variable
+      "values" : flatten([for index, sp in v[*].values : v[index].values if v[index].variable == v[0].variable]) # loop again to build the values inner map
+    }
+  ]
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role_policy" {
@@ -59,11 +66,11 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
     }
 
     dynamic "condition" {
-      for_each = local.conditions
+      for_each = local.merge_conditions
 
       content {
-        test     = condition.value.test
-        variable = condition.value.variable
+        test     = split("|", condition.value.test)[0]
+        variable = split("|", condition.value.test)[1]
         values   = condition.value.values
       }
     }

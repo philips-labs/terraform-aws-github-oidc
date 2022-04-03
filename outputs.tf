@@ -5,5 +5,5 @@ output "role" {
 
 output "conditions" {
   description = "The assume conditions added to the role."
-  value       = local.conditions
+  value       = local.merge_conditions
 }
