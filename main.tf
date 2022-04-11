@@ -41,7 +41,6 @@ locals {
     for k, v in { for c in local.conditions : "${c.test}|${c.variable}" => c... } : # group by test & variable
     {
       "test" : k,
-      "variable" : v[0].variable
       "values" : flatten([for index, sp in v[*].values : v[index].values if v[index].variable == v[0].variable]) # loop again to build the values inner map
     }
   ]
