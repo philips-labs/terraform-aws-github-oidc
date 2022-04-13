@@ -52,7 +52,7 @@ jobs:
 
       - name: Update major tag
         if: ${{ steps.release.outputs.is_release }}
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: |
             let newTag = false
