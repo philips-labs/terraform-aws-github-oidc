@@ -105,6 +105,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_conditions"></a> [conditions](#output\_conditions) | The assume conditions added to the role. |
 | <a name="output_role"></a> [role](#output\_role) | The crated role that can be assumed for the configured repository. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
