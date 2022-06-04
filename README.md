@@ -40,7 +40,8 @@ Nest you ca pass the output the one or multiple instances of the module.
 module "oidc_repo_s3" {
   source = "github.com/philips-labs/terraform-aws-github-oidc?ref=<version>"
 
-  openid_connect_provider_arn = module.oidc_provider.  repo                        = var.repo_s3
+  openid_connect_provider_arn = module.oidc_provider.openid_connect_provider.arn
+  repo                        = var.repo_s3
   role_name                   = "repo-s3"
 
   # optional
