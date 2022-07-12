@@ -83,4 +83,6 @@ resource "aws_iam_role" "main" {
   path                 = var.role_path
   permissions_boundary = var.role_permissions_boundary
   assume_role_policy   = data.aws_iam_policy_document.github_actions_assume_role_policy[0].json
+
+  tags = var.tags
 }

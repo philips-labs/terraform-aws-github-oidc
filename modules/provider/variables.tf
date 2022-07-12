@@ -7,3 +7,9 @@ variable "thumbprint_list" {
   type        = list(string)
   default     = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
 }
+
+variable "tags" {
+  description = "(Optional) Add tags to resources."
+  type        = map(string)
+  default     = {}
+}
