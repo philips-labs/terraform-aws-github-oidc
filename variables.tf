@@ -64,3 +64,9 @@ variable "role_permissions_boundary" {
   type        = string
   default     = null
 }
+
+variable "tags" {
+  description = "(Optional) Add tags to resources."
+  type        = map(string)
+  default     = {}
+}
