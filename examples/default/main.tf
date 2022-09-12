@@ -19,7 +19,7 @@ module "oidc_repo_ecr" {
   repo                        = var.repo_ecr
   default_conditions          = ["allow_environment"]
   github_environments         = ["production"]
-  account_id = data.aws_caller_identity.current.account_id
+  account_id                  = data.aws_caller_identity.current.account_id
 }
 
 ##########################################
