@@ -10,6 +10,7 @@ module "oidc_repo_s3" {
   openid_connect_provider_arn = module.oidc_provider.openid_connect_provider.arn
   repo                        = var.repo_s3
   role_name                   = "repo-s3"
+  account_id                  = data.aws_caller_identity.current.account_id
 }
 
 module "oidc_repo_ecr" {
