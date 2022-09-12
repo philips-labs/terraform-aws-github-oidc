@@ -55,7 +55,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
 
       principals {
         type        = "AWS"
-        identifiers = ["arn:aws:iam::${each.key}:root"]
+        identifiers = ["arn:aws:iam::${statement.value}:root"]
       }
     }
   }
