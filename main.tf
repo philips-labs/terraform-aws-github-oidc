@@ -49,13 +49,13 @@ locals {
 data "aws_iam_policy_document" "github_actions_assume_role_policy" {
   count = var.repo != null ? 1 : 0
   dynamic "statement" {
-    for_each = var.account_id != "" ? [1] : []
+    for_each = toset(var.account_ids)
     content {
       actions = ["sts:AssumeRole"]
 
       principals {
         type        = "AWS"
-        identifiers = ["arn:aws:iam::${var.account_id}:root"]
+        identifiers = ["arn:aws:iam::${each.key}:root"]
       }
     }
   }
