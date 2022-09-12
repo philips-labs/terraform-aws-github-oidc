@@ -70,3 +70,9 @@ variable "role_policy_arns" {
   type        = list(string)
   default     = []
 }
+
+variable "account_ids" {
+  description = "Root users of these Accounts (id) would be given the permissions to assume the role created by this module."
+  type        = list(string)
+  default     = []
+}
