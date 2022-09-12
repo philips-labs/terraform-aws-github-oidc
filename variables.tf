@@ -73,5 +73,5 @@ variable "role_policy_arns" {
 
 variable "account_id" {
   description = "Root users of this Account (id) would be given the permissions to assume the role created by this module."
-  type = string
+  type        = string
 }
