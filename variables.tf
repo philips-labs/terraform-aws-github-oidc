@@ -74,7 +74,7 @@ variable "role_policy_arns" {
 variable "role_max_session_duration" {
   description = "Maximum session duration (in seconds) that you want to set for the specified role."
   type        = number
-  default     = 3600
+  default     = null
 }
 
 variable "account_ids" {
