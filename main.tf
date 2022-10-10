@@ -44,28 +44,31 @@ locals {
       "values" : flatten([for index, sp in v[*].values : v[index].values if v[index].variable == v[0].variable]) # loop again to build the values inner map
     }
   ]
+
+  root_principal_arns   = [for acc in var.account_ids : "arn:aws:iam::${acc}:root"]
+  merged_principal_arns = concat(local.root_principal_arns, var.custom_principal_arns)
 }
 
 data "aws_iam_policy_document" "github_actions_assume_role_policy" {
   count = var.repo != null ? 1 : 0
+
   dynamic "statement" {
-    for_each = toset(var.account_ids)
+    for_each = length(local.merged_principal_arns) > 0 ? [1] : []
     content {
       actions = ["sts:AssumeRole"]
 
       principals {
         type        = "AWS"
-        identifiers = ["arn:aws:iam::${statement.value}:root"]
+        identifiers = local.merged_principal_arns
       }
     }
   }
+
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     principals {
-      type = "Federated"
-      identifiers = [
-        var.openid_connect_provider_arn
-      ]
+      type        = "Federated"
+      identifiers = [var.openid_connect_provider_arn]
     }
 
     condition {

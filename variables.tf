@@ -82,3 +82,9 @@ variable "account_ids" {
   type        = list(string)
   default     = []
 }
+
+variable "custom_principal_arns" {
+  description = "List of IAM principals ARNs able to assume the role created by this module."
+  type        = list(string)
+  default     = []
+}
