@@ -71,6 +71,12 @@ variable "role_policy_arns" {
   default     = []
 }
 
+variable "role_max_session_duration" {
+  description = "Maximum session duration (in seconds) that you want to set for the specified role."
+  type        = number
+  default     = null
+}
+
 variable "account_ids" {
   description = "Root users of these Accounts (id) would be given the permissions to assume the role created by this module."
   type        = list(string)
