@@ -8,7 +8,7 @@ The module provides an example how to setup roles to to use with OIDC for multip
 
 ## Usages
 
-Create a GitHub repositories (private) for S3 and ECR and set teh variable `repo` to the name of your created repo. Add as secret `AWS_ACCOUNT_ID` and set the value to your account.
+Create a GitHub repositories (private) for S3 and ECR and set the variable `repo` to the name of your created repo. Add as secret `AWS_ACCOUNT_ID` and set the value to your account.
 
 ```bash
 terraform init
