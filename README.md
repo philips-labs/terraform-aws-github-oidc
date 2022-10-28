@@ -30,7 +30,7 @@ In case there is not OpenID Connect provider already created in the AWS account,
 
 ```hcl
 module "oidc_provider" {
-  source = "github.com/philips-labs/terraform-aws-github-oidc/?ref=<version>//modules/provider"
+  source = "github.com/philips-labs/terraform-aws-github-oidc?ref=<version>//modules/provider"
 }
 ```
 
