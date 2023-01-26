@@ -88,3 +88,9 @@ variable "custom_principal_arns" {
   type        = list(string)
   default     = []
 }
+
+variable "github_oidc_issuer" {
+  description = "OIDC issuer for GitHub Actions"
+  type        = string
+  default     = "token.actions.githubusercontent.com"
+}
