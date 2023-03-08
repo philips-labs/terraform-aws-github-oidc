@@ -10,7 +10,7 @@ locals {
   github_environments = (length(var.github_environments) > 0 && var.repo != null) ? [for e in var.github_environments : "repo:${var.repo}:environment:${e}"] : ["ensurethereisnotmatch"]
   role_name           = (var.repo != null && var.role_name != null) ? var.role_name : "${substr(replace(var.repo != null ? var.repo : "", "/", "-"), 0, 64 - 8)}-${random_string.random[0].id}"
 
-  variable_sub = "token.actions.githubusercontent.com:sub"
+  variable_sub = "${var.github_oidc_issuer}:sub"
 
   default_allow_main = contains(var.default_conditions, "allow_main") ? [{
     test     = "StringLike"
@@ -73,7 +73,7 @@ data "aws_iam_policy_document" "github_actions_assume_role_policy" {
 
     condition {
       test     = "StringEquals"
-      variable = "token.actions.githubusercontent.com:aud"
+      variable = "${var.github_oidc_issuer}:aud"
       values   = ["sts.amazonaws.com"]
     }
 
