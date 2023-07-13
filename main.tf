@@ -97,11 +97,5 @@ resource "aws_iam_role" "main" {
   permissions_boundary = var.role_permissions_boundary
   assume_role_policy   = data.aws_iam_policy_document.github_actions_assume_role_policy[0].json
   max_session_duration = var.role_max_session_duration
-}
-
-resource "aws_iam_role_policy_attachment" "custom" {
-  count = length(var.role_policy_arns)
-
-  role       = join("", aws_iam_role.main.*.name)
-  policy_arn = var.role_policy_arns[count.index]
+  managed_policy_arns  = var.role_policy_arns
 }
