@@ -34,7 +34,7 @@ module "oidc_provider" {
 }
 ```
 
-Nest you ca pass the output the one or multiple instances of the module.
+Next you can pass the output the one or multiple instances of the module.
 
 ```hcl
 module "oidc_repo_s3" {
