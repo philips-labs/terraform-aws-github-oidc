@@ -10,3 +10,8 @@ variable "thumbprint_list" {
     "1c58a3a8518e8759bf075b76b750d4f2df264fcd"
   ]
 }
+
+variable "tags" {
+  description = "(Optional) Map of resource tags for the IAM OIDC provider. If configured with a provider default_tags configuration block present, tags with matching keys will overwrite those defined at the provider-level."
+  type = map(string)
+}
