@@ -10,3 +10,9 @@ variable "thumbprint_list" {
     "1c58a3a8518e8759bf075b76b750d4f2df264fcd"
   ]
 }
+
+variable "tags" {
+  description = "A map of tags to add to OIDC identity provider."
+  type        = map(string)
+  default     = {}
+}
