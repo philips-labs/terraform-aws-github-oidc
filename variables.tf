@@ -47,6 +47,12 @@ variable "repo" {
   }
 }
 
+variable "repo_mainline_branch" {
+  description = "(Optional) Mainline branch of the GitHub repository, defaults to 'main'. This will be the main/default branch that `allow_main` provides access to."
+  type        = string
+  default     = "main"
+}
+
 variable "role_name" {
   description = "(Optional) role name of the created role, if not provided the `namespace` will be used."
   type        = string
