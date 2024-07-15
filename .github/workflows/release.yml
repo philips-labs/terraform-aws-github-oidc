@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Dry run release draft to calculate next version
-        uses: release-drafter/release-drafter@v5
+        uses: release-drafter/release-drafter@v6
         id: draft
         with:
           prerelease: false
