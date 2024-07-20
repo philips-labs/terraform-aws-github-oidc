@@ -100,3 +100,9 @@ variable "github_oidc_issuer" {
   type        = string
   default     = "token.actions.githubusercontent.com"
 }
+
+variable "tags" {
+  description = "A map of tags to add to OIDC identity provider."
+  type        = map(string)
+  default     = {}
+}
