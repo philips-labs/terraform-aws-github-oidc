@@ -12,6 +12,7 @@ variable "thumbprint_list" {
 }
 
 variable "tags" {
-  description = "(Optional) Map of resource tags for the IAM OIDC provider. If configured with a provider default_tags configuration block present, tags with matching keys will overwrite those defined at the provider-level."
+  description = "A map of tags to add to OIDC identity provider."
   type        = map(string)
+  default     = {}
 }
