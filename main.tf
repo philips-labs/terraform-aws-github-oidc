@@ -15,7 +15,7 @@ locals {
   default_allow_main = contains(var.default_conditions, "allow_main") ? [{
     test     = "StringLike"
     variable = local.variable_sub
-    values   = ["repo:${var.repo}:ref:refs/heads/main"]
+    values   = ["repo:${var.repo}:ref:refs/heads/${var.repo_mainline_branch}"]
   }] : []
 
   default_allow_environment = contains(var.default_conditions, "allow_environment") ? [{
