@@ -102,7 +102,7 @@ variable "github_oidc_issuer" {
 }
 
 variable "tags" {
-  description = "Optional map(string) - Key-value mapping of tags for the IAM role"
+  description = "Optional map(string) - Key-value mapping of tags for the IAM role."
   type        = map(string)
   default     = {}
 }
