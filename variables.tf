@@ -100,3 +100,9 @@ variable "github_oidc_issuer" {
   type        = string
   default     = "token.actions.githubusercontent.com"
 }
+
+variable "tags" {
+  description = "Optional map(string) - Key-value mapping of tags for the IAM role."
+  type        = map(string)
+  default     = {}
+}
