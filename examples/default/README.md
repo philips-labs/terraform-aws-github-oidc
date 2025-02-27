@@ -18,3 +18,14 @@ terraform apply
 For the S3 repository follow the directions in the single example. On the console the name of the ECR repo and role are printed. Next update [workflow](../repositories/.github/workflows/../../repo-ecr/.github/workflows/ecr.yml) for the repo and role. Add, commit and push. The job should now push a busybox container to your ECR repo.
 
 Finally you can clean up with `terraform destroy`
+
+## Required GitHub Workflows Permissions
+
+When configuring GitHub workflows to use this module, you need to specify the following permissions in your workflow configuration:
+
+```yaml
+permissions:
+  id-token: write
+```
+
+This permission is required for the GitHub Actions to be able to assume the IAM role created by this module.
