@@ -97,6 +97,7 @@ resource "aws_iam_role" "main" {
   permissions_boundary = var.role_permissions_boundary
   assume_role_policy   = data.aws_iam_policy_document.github_actions_assume_role_policy[0].json
   max_session_duration = var.role_max_session_duration
+  tags                 = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "custom" {
