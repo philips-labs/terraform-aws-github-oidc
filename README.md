@@ -24,6 +24,17 @@ The module creates a role with an assume role policy to check the OIDC claims fo
 - `deny_pull_request`: Denies assuming the role for a pull request.
 - `allow_all` : Allow GitHub Actions for any claim for the repository. Be careful, this allows forks as well to assume the role!
 
+## Required GitHub Workflows Permissions
+
+When configuring GitHub workflows to use this module, you need to specify the following permissions in your workflow configuration:
+
+```yaml
+permissions:
+  id-token: write
+```
+
+This permission is required for the GitHub Actions to be able to assume the IAM role created by this module.
+
 ## Usages
 
 In case there is not OpenID Connect provider already created in the AWS account, create one via the submodule.
